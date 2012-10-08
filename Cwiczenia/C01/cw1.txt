@@ -1,0 +1,93 @@
+1. Uruchom "Oracle VM VirtualBox" (Programy->Narzędzia systemowe)
+2. Stwórz nową maszynę:
+	- nazwa np.: minix 
+	- System operacyjny: Other, Wersja: Other/Unknown
+	- Rozmiar pamięci podstawowej: 256MB
+	- Stwórz nowy wirtualny dysk twardy, rozmiar 1GB
+
+3. W Oracle VM VirtualBox wybierz Plik->Menedżer nośników wirtualnych
+	- w zakładce Obrazy CD/DVD
+	- "Dodaj" obraz /afs/matinf.uj.edu.pl/common/tcs/jkozik/SO/Minix/minix-3.1.0-book.iso
+	
+4. Uruchom maszynę "minix"
+	- w "Asystencie pierwszego uruchomienia" wybierz obraz minix-3.1.0-book.iso
+	- w boot loaderze wybierz "1" - Regular Minix
+	- "Login as root and run 'setup' to install Minix."
+	- wybieramy domyślną klawiaturę "us-std"
+	- Ethernet card - 6. AMD LANCE 
+	- wybieramy Full install
+	- wybieramy automatyczne partycjonowanie [ENTER]
+	- ackeptujemy dysk /dev/c0d0
+	- oraz region (całość)
+	- i jeszcze raz potwierdzamy "yes" 
+	- przyjmujemy domyślny rozmiar partycji /home
+	- oraz rozmiar bloków (4KB)
+	- "Scanning for bad blocks" można przerwać CTRL+C
+	- po pojawieniu sie prompta "#" zamknij system "shutdown"
+	- po zamknięciu odmontuj obraz "Urządzenia->Płyty CD/DVD->Odmontuj płytę CD/DVD
+
+5. Uruchamiamy zainstalowany system
+	- boot c0d0
+	- logujemy się jako "root"
+	- "touch /etc/rc.net" - wyłączmy na razie usługi sieciowe 
+	- pierwsze ćwiczenie z 'vi' - wykomentuj linię 103 w pliku /usr/etc/rc
+		(tutorial 'vi' np: 
+			https://engineering.purdue.edu/ECN/Support/KB/Docs/ViTextEditorTutorial/index_html 
+			http://www.eng.hawaii.edu/Tutor/vi.html
+		)
+	- "shutdown -r now"
+
+6. Dodajemy nowego użytkownika:
+	- boot c0d0
+	- logujemy się jako root
+	- "more  /usr/bin/adduser" - oglądamy skrypt dodawania użytkownika
+	- będziemy postępować zgodnie ze skryptem ale w drugim terminalu Alt+F2 
+	- logujemy się jako root
+	- "who am i" - we need  to be root (skrypt sprawdza za pomocą "id")
+	- najpierw dodajemy grupę: w pliku /etc/group dodajemy linię np. (drugie  ćwiczenie z 'vi')
+		dude:*:10:
+
+	- zakładamy lock związany z plikiem passwd
+			"ln /etc/passwd /etc/ptmp"
+
+	- zakładamy katalog dla użytkownika i  kopiujemy domyślną zawartość: 
+			"cp -r /home/ast /home/dude"
+
+	- zmieniamy prawa dostępu do nowego katalogu "chown -R 10:10 /home/dude"
+	- dodajemy wpisy do /etc/shadow i /etc/passwd :
+		(shadow) dude::10:10:::
+		(passwd) dude:##dude:10:10:El Duderino:/home/dude:
+	- logujemy się w nowym terminalu jako 'dude' i zmieniamy hasło "passwd"
+	- "Password file busy.." ? o czymś zapomnieliśmy..
+	- zamykamy system jako root "shutdown -h now" lub "halt"
+
+7. Konfigurujemy sieć:
+	- w "Oracle VM VirtualBox" w Szczegółach maszyny wybieramy "Sieć"
+	- wybieramy "Podłączona do:" "Karta sieci izolowanej (host-only)" (domyślne ustawienia)
+	- uruchamiamy maszynę
+	- plik /etc/rc.net wypełniamy treścią:
+		ifconfig -h 192.168.56.3 -n 255.255.255.0
+		
+		daemonize nonamed
+		daemonize tcpd telnet in.telnetd
+		daemonize tcpd ftp in.ftpd
+
+	- w pliku /usr/etc/rc blok od "# start only network drivers ..." do najbliższego "done" przenieś do następnej linii za "echo -n "Starting services:" w efekcie cały blok ma być przed `up random "" /dev/random`
+	- odkomentuj `up inet ""`
+	- "shutdown -r now"
+	- po restarcie ze stacji roboczej powinniśmy się móc połączyć do maszyny:
+		telnet 192.168.56.3 	- logujemy się jako 'dude' terminal 'vt100'
+	- ftp też jest możliwe, ale pasywne:
+		pftp 192.168.56.3	- zawsze z zewnątrz jako 'dude'
+	- można też zamontować system plików minixa przez ftp: w Nautilusie:
+		Plik->Połącz z serwerem
+			typ: FTP (z logowaniem)
+			serwer: 192.168.56.3
+			port: 21	
+			katalog: /
+			nazwa użytkownika: dude
+			...
+	- poza Nautilusem można znaleźć zamontowany system w ~/.gvfs
+
+
+8. Zawsze kończymy prace przez "shutdown -h" lub "halt".
