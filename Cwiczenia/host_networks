@@ -1,0 +1,1 @@
+VBoxManage setextradata $1 VBoxInternal/Devices/pcnet/0/LUN#0/Config/RestrictAccess 0
