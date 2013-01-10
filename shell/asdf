@@ -1,0 +1,17 @@
+Makefile
+asdf
+commands.c
+commands.h
+commands.o
+config.h
+core.635
+cparse.c
+cparse.h
+cparse.o
+mshell
+mshell.c
+mshell.o
+splitter
+splitter.c
+test.e2.in
+work.kdev4

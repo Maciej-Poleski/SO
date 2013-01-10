@@ -1,0 +1,11 @@
+ls /home
+
+sleep 3
+ls -las /home
+
+
+cat /etc/version
+ls /home
+ls /home
+ls /home
+cat /etc/version /etc/version
