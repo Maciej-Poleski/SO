@@ -1,0 +1,12 @@
+Aktualizacja clang-2.9 -> clang-3.1
+Nowe dowiązanie symboliczne "clang++" c++ w katalogu /usr/pkg/bin
+Nowy katalog /usr/src/servers/ss
+Zmodyfikowany plik /usr/src/servers/Makefile
+Zmodyfikowany plik /usr/src/tools/Makefile
+Zmodyfikowany plik /usr/src/include/minix/com.h
+Zmodyfikowany plik /usr/src/kernel/table.c
+Zmodyfikowany plik /usr/src/servers/rs/table.c
+Zmodyfikowany plik /etc/services.conf
+Zmodyfikowany plik /usr/src/kernel/proc.c
+Nowy plik /usr/src/include/sem.h
+Zmodyfikowany plik /usr/src/include/Makefile
