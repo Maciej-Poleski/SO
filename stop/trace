@@ -1,0 +1,13 @@
+/usr/src/servers/pm/signal.c
+/usr/src/servers/pm/mproc.h
+/usr/src/kernel/proc.h
+/usr/src/kernel/system.c
+/usr/src/kernel/system.h
+/usr/src/include/minix/com.h
+/usr/src/include/minix/syslib.h
+/usr/src/lib/libsys/sys_clear.c
+/usr/src/drivers/tty/tty.c
+/usr/src/commands/ash/trap.c
+/usr/src/commands/ash/main.c
+/usr/src/commands/ash/exec.c
+/usr/src/commands/ash/jobs.c
